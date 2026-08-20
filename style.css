@@ -1664,20 +1664,120 @@ a.dept-card { color: inherit; display: flex; flex-direction: column; }
 }
 .poster-grid .poster-frame { max-width: none; margin: 0; }
 
+/* ==========================================================================
+   DOCTOR PROFILE PAGES — MOBILE
+   Must stay AFTER desktop doctor styles (cascade was overriding earlier rules)
+   ========================================================================== */
 @media (max-width: 900px) {
-  .about-grid,
-  .doctor-contact-card { grid-template-columns: 1fr; }
-  .why-grid { grid-template-columns: 1fr 1fr; }
-  .gallery-strip { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 640px) {
-  .poster-showcase { padding: 48px 0; }
-  .poster-grid { grid-template-columns: 1fr; }
-  .other-specialists { padding: 48px 0 32px; }
-  .doctor-contact-card { padding: 24px 18px; }
-  .doctor-contact-card .cta-actions,
-  .doctor-contact-card > div:last-child {
+  .doctor-page-hero {
+    padding: 40px 0 48px;
+  }
+  .doctor-page-hero__grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    text-align: center;
+    justify-items: center;
+  }
+  .doctor-page-hero__photo {
+    order: -1;
+    margin: 0 auto;
+    width: min(280px, 72vw);
+    max-width: 280px;
+  }
+  .doctor-page-hero__grid > div {
     width: 100%;
   }
+  .doctor-page-hero .hero__title {
+    font-size: clamp(1.75rem, 7vw, 2.25rem);
+  }
+  .doctor-page-hero .hero__subtitle {
+    margin-inline: auto;
+    max-width: 36rem;
+    font-size: 15px;
+  }
+  .doctor-page-hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    margin-top: 22px;
+  }
+  .doctor-page-hero__actions .btn {
+    width: 100%;
+    min-height: 48px;
+    white-space: normal;
+  }
+  .availability-badge {
+    margin-inline: auto;
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .about-grid,
+  .doctor-contact-card {
+    grid-template-columns: 1fr;
+  }
+  .why-grid,
+  .service-grid,
+  .gallery-strip,
+  .poster-grid {
+    grid-template-columns: 1fr;
+  }
+  .doctor-section {
+    padding: 52px 0;
+  }
+  .doctor-section .section-head h2 {
+    font-size: clamp(1.45rem, 6vw, 1.85rem);
+  }
+  .service-card,
+  .why-card {
+    padding: 20px 18px;
+  }
+  .faq-item__question {
+    font-size: 15px;
+    padding-right: 36px;
+    text-align: left;
+  }
+  .doctor-cta {
+    padding: 56px 0;
+  }
+  .doctor-cta .cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .doctor-cta .cta-actions .btn {
+    width: 100%;
+    min-height: 48px;
+    white-space: normal;
+  }
+  .doctor-contact-card {
+    padding: 24px 18px;
+  }
+  .doctor-contact-card .cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+  .doctor-contact-card .cta-actions .btn {
+    width: 100%;
+    min-height: 48px;
+    white-space: normal;
+  }
+  .other-specialists {
+    padding: 48px 0 32px;
+  }
+  .other-specialists .doctor-grid,
+  .other-specialists .doctor-grid--four {
+    grid-template-columns: 1fr;
+  }
+  .poster-showcase { padding: 48px 0; }
+  .poster-frame { padding: 10px; }
   .highlights-card { padding: 22px 18px; }
 }
+
+@media (max-width: 640px) {
+  .doctor-page-hero__photo {
+    width: min(260px, 78vw);
+    max-width: 260px;
+  }
+}
+
