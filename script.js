@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('a[href^="tel:"]').forEach(function (link) {
       if (DATA.contact.phoneHref) link.setAttribute('href', 'tel:' + DATA.contact.phoneHref);
     });
-    document.querySelectorAll('.utility-bar__phone, .booking__helpline a').forEach(function (el) {
+    document.querySelectorAll('.nav__phone, .booking__helpline a').forEach(function (el) {
       if (el.tagName === 'A' && el.getAttribute('href') && el.getAttribute('href').indexOf('tel:') === 0 && DATA.contact.phone) {
         el.childNodes.forEach(function (node) {
           if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
