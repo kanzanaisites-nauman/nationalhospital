@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Page Not Found | National Hospital Bahawalnagar</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0b132b; --blue: #0066cc; --teal: #0a8a9c; --ice-1: #eaf3fb;
+    --font-display: 'Fraunces', serif; --font-body: 'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: var(--navy);
+    background-image: radial-gradient(ellipse 900px 500px at 15% -10%, rgba(0,102,204,0.22), transparent 60%),
+                       radial-gradient(ellipse 700px 500px at 100% 10%, rgba(10,138,156,0.14), transparent 55%);
+    font-family: var(--font-body);
+    color: #f3f7fd;
+    padding: 24px;
+  }
+  .wrap { max-width: 520px; text-align: center; }
+  .mark { width: 64px; height: 64px; margin: 0 auto 28px; }
+  .code { font-family: var(--font-display); font-weight: 700; font-size: 84px; color: #fff; margin: 0; line-height: 1; }
+  h1 { font-family: var(--font-display); font-weight: 600; font-size: 26px; margin: 14px 0 12px; color: #fff; }
+  p { font-size: 15px; color: #b7c4de; margin: 0 0 32px; line-height: 1.7; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 28px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 999px;
+    font-weight: 600; font-size: 14.5px; text-decoration: none; transition: transform 0.3s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn--primary { background: linear-gradient(120deg, var(--blue), #004a99); color: #fff; }
+  .btn--outline { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; }
+  .helpline { font-size: 13.5px; color: #8ea3c9; }
+  .helpline a { color: #7fe6f4; font-weight: 600; text-decoration: none; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <svg class="mark" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#0066cc"/><path d="M28 52h13l5.5-17 9 34 7-25 5.5 8h14" stroke="#e9fbff" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <p class="code">404</p>
+    <h1>This page couldn't be found</h1>
+    <p>The page you're looking for may have been moved or no longer exists. Let's get you back to somewhere useful.</p>
+    <div class="actions">
+      <a href="/" class="btn btn--primary">Return to Homepage</a>
+      <a href="/#booking" class="btn btn--outline">Book an Appointment</a>
+    </div>
+    <p class="helpline">Need help right now? Call <a href="tel:+923008588095">0300 8588095</a></p>
+  </div>
+</body>
+</html>

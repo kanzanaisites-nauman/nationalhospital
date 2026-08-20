@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin Dashboard — National Hospital Bahawalnagar</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0b132b; --blue: #0066cc; --teal: #06b6d4; --ice: #eaf3fb;
+    --line: #e6ebf3; --danger: #e0384a; --success: #14b881; --ink-soft: #5a6b8c;
+    --sidebar-w: 264px; --topbar-h: 64px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Inter', sans-serif; background: #f5f8fc; color: var(--navy); }
+  code { font-family: 'JetBrains Mono', monospace; background: var(--ice); padding: 1px 6px; border-radius: 4px; color: var(--blue); font-size: 12px; }
+
+  /* ---------- Password Gate ---------- */
+  .gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; background: var(--navy); background-image: radial-gradient(ellipse 700px 400px at 20% 0%, rgba(0,102,204,0.35), transparent 60%); }
+  .gate__card { background: #fff; border-radius: 20px; padding: 40px; max-width: 380px; width: 100%; box-shadow: 0 30px 80px -30px rgba(11,19,43,0.5); text-align: center; }
+  .gate__card h1 { font-size: 20px; margin: 0 0 8px; }
+  .gate__card p { font-size: 13.5px; color: var(--ink-soft); margin: 0 0 24px; }
+  .gate__card input { width: 100%; padding: 13px 14px; border: 1.5px solid var(--line); border-radius: 10px; font-size: 15px; margin-bottom: 14px; }
+  .gate__card button { width: 100%; padding: 13px; border: none; border-radius: 10px; background: var(--blue); color: #fff; font-weight: 600; font-size: 15px; cursor: pointer; }
+  .gate__error { color: var(--danger); font-size: 13px; margin-top: 10px; display: none; }
+
+  /* ---------- App Shell ---------- */
+  .app { display: none; }
+  .app.is-visible { display: block; }
+  .app__shell { display: flex; min-height: 100vh; }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar {
+    width: var(--sidebar-w); flex-shrink: 0;
+    background: var(--navy);
+    background-image: radial-gradient(ellipse 500px 300px at 100% 0%, rgba(6,182,212,0.18), transparent 60%);
+    color: #dce6f7;
+    padding: 22px 14px;
+    position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto;
+  }
+  .sidebar__brand { display: flex; align-items: center; gap: 10px; padding: 6px 10px 22px; }
+  .sidebar__brand-mark { width: 34px; height: 34px; border-radius: 9px; background: linear-gradient(135deg, var(--blue), var(--teal)); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; color: #fff; flex-shrink: 0; }
+  .sidebar__brand-text { line-height: 1.25; }
+  .sidebar__brand-text strong { display: block; font-size: 13.5px; color: #fff; }
+  .sidebar__brand-text span { font-size: 11px; color: #8ea3c9; font-family: 'JetBrains Mono', monospace; }
+
+  .nav-group__label { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: #6f84ad; padding: 16px 12px 8px; font-family: 'JetBrains Mono', monospace; }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    width: 100%; text-align: left;
+    padding: 10px 12px; border-radius: 10px;
+    background: none; border: none; color: #b9c6e2;
+    font-size: 13.5px; font-weight: 500; font-family: inherit;
+    cursor: pointer; margin-bottom: 2px;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+  .nav-item.is-active { background: rgba(6,182,212,0.16); color: #fff; }
+  .nav-item.is-active .nav-item__icon { color: var(--teal); }
+  .nav-item__icon { width: 18px; text-align: center; flex-shrink: 0; font-size: 14px; }
+  .nav-item__badge { margin-left: auto; background: rgba(255,255,255,0.1); color: #dce6f7; font-size: 10.5px; font-family: 'JetBrains Mono', monospace; padding: 1px 7px; border-radius: 999px; }
+
+  .sidebar__footer { margin-top: 20px; padding: 14px 12px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .sidebar__footer button { width: 100%; padding: 9px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #b9c6e2; font-size: 12px; cursor: pointer; }
+
+  /* ---------- Main ---------- */
+  .main { flex: 1; margin-left: var(--sidebar-w); min-width: 0; }
+  .topbar {
+    height: var(--topbar-h); position: sticky; top: 0; z-index: 50;
+    background: #fff; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px; gap: 16px;
+  }
+  .topbar__title h1 { font-size: 17px; margin: 0; }
+  .topbar__title p { font-size: 12px; color: var(--ink-soft); margin: 1px 0 0; }
+  .topbar__actions { display: flex; gap: 10px; align-items: center; flex-shrink: 0; }
+  .hamburger-btn { display: none; background: none; border: 1px solid var(--line); border-radius: 8px; width: 38px; height: 38px; font-size: 16px; cursor: pointer; }
+
+  .content { padding: 26px 28px 100px; max-width: 860px; }
+  .page { display: none; }
+  .page.is-active { display: block; }
+
+  .btn { padding: 10px 18px; border-radius: 9px; border: none; font-weight: 600; font-size: 13.5px; cursor: pointer; white-space: nowrap; }
+  .btn--primary { background: var(--blue); color: #fff; }
+  .btn--primary:hover { background: #0057b3; }
+  .btn--ghost { background: #fff; border: 1.5px solid var(--line); color: var(--navy); }
+  .btn--ghost:hover { border-color: var(--blue); color: var(--blue); }
+  .btn--sm { padding: 7px 14px; font-size: 12.5px; }
+
+  .panel { background: #fff; border-radius: 16px; padding: 26px; margin-bottom: 18px; border: 1px solid var(--line); }
+  .panel h2 { font-size: 16px; margin: 0 0 4px; }
+  .panel .hint { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 18px; line-height: 1.6; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 12.5px; font-weight: 600; margin-bottom: 6px; }
+  .field input, .field textarea, .field select {
+    width: 100%; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 8px; font-size: 14px; font-family: inherit;
+  }
+  .field input:focus, .field textarea:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(6,182,212,0.14); }
+  .field textarea { resize: vertical; min-height: 70px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+  .repeat-item { border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin-bottom: 14px; position: relative; background: #fbfdff; }
+  .repeat-item__remove { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--danger); font-size: 20px; cursor: pointer; line-height: 1; }
+  .repeat-item__title { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-soft); font-family: 'JetBrains Mono', monospace; margin-bottom: 12px; }
+
+  .add-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--ice); border: 1.5px dashed var(--blue); color: var(--blue); padding: 10px 18px; border-radius: 10px; font-weight: 600; font-size: 13.5px; cursor: pointer; }
+
+  .output textarea { width: 100%; height: 280px; font-family: 'JetBrains Mono', monospace; font-size: 12px; border: 1.5px solid var(--line); border-radius: 10px; padding: 14px; background: #0b132b; color: #b7f7ff; }
+  .output-actions { display: flex; gap: 10px; margin-top: 12px; }
+
+  .security-note { background: #fff7e6; border: 1px solid #ffd98e; border-radius: 12px; padding: 16px 18px; font-size: 12.5px; color: #7a5a00; margin-bottom: 20px; }
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; padding: 12px 22px; border-radius: 999px; font-size: 13.5px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 999; }
+  .toast.is-visible { opacity: 1; }
+
+  /* ---------- Overview page ---------- */
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+  .stat-card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+  .stat-card strong { display: block; font-size: 26px; font-family: 'JetBrains Mono', monospace; color: var(--navy); }
+  .stat-card span { font-size: 12px; color: var(--ink-soft); }
+  .quick-links { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .quick-link { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px; cursor: pointer; text-align: left; font-family: inherit; }
+  .quick-link:hover { border-color: var(--teal); }
+  .quick-link__icon { width: 36px; height: 36px; border-radius: 9px; background: var(--ice); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+  .quick-link strong { display: block; font-size: 13.5px; color: var(--navy); }
+  .quick-link span { font-size: 11.5px; color: var(--ink-soft); }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; z-index: 200; box-shadow: 20px 0 50px rgba(0,0,0,0.2); }
+    .sidebar.is-open { transform: translateX(0); }
+    .main { margin-left: 0; }
+    .hamburger-btn { display: block; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .quick-links { grid-template-columns: 1fr; }
+    .row2, .row3 { grid-template-columns: 1fr; }
+    .content { padding: 20px 16px 100px; }
+    .topbar { padding: 0 16px; }
+  }
+  .sidebar-backdrop { display: none; position: fixed; inset: 0; background: rgba(11,19,43,0.5); z-index: 150; }
+  .sidebar-backdrop.is-visible { display: block; }
+</style>
+</head>
+<body>
+
+<!-- ============ PASSWORD GATE ============ -->
+<div class="gate" id="gate">
+  <div class="gate__card">
+    <h1>National Hospital — Admin</h1>
+    <p>Enter the admin password to edit site content.</p>
+    <input type="password" id="gatePassword" placeholder="Password" autocomplete="off">
+    <button id="gateSubmit">Unlock Dashboard</button>
+    <p class="gate__error" id="gateError">Incorrect password. Try again.</p>
+  </div>
+</div>
+
+<!-- ============ ADMIN APP ============ -->
+<div class="app" id="app">
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+<div class="app__shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__brand">
+      <div class="sidebar__brand-mark">PH</div>
+      <div class="sidebar__brand-text">
+        <strong>National Hospital</strong>
+        <span>Admin Dashboard</span>
+      </div>
+    </div>
+
+    <div class="nav-group__label">Overview</div>
+    <button type="button" class="nav-item is-active" data-page="overview"><span class="nav-item__icon">&#9673;</span> Dashboard Home</button>
+
+    <div class="nav-group__label">Branding</div>
+    <button type="button" class="nav-item" data-page="branding"><span class="nav-item__icon">&#9673;</span> Logo &amp; Favicon</button>
+    <button type="button" class="nav-item" data-page="hero"><span class="nav-item__icon">&#9673;</span> Hero Images</button>
+
+    <div class="nav-group__label">Business Info</div>
+    <button type="button" class="nav-item" data-page="contact"><span class="nav-item__icon">&#9673;</span> Contact Details</button>
+    <button type="button" class="nav-item" data-page="booking"><span class="nav-item__icon">&#9673;</span> Booking Delivery</button>
+    <button type="button" class="nav-item" data-page="rating"><span class="nav-item__icon">&#9673;</span> Google Rating</button>
+    <button type="button" class="nav-item" data-page="map"><span class="nav-item__icon">&#9673;</span> Google Map</button>
+    <button type="button" class="nav-item" data-page="hours"><span class="nav-item__icon">&#9673;</span> Visiting Hours</button>
+
+    <div class="nav-group__label">Content</div>
+    <button type="button" class="nav-item" data-page="story"><span class="nav-item__icon">&#9673;</span> Our Story</button>
+    <button type="button" class="nav-item" data-page="faq"><span class="nav-item__icon">&#9673;</span> FAQ</button>
+    <button type="button" class="nav-item" data-page="doctors"><span class="nav-item__icon">&#9673;</span> Doctors <span class="nav-item__badge" id="navDoctorCount">0</span></button>
+    <button type="button" class="nav-item" data-page="videos"><span class="nav-item__icon">&#9673;</span> Videos <span class="nav-item__badge" id="navVideoCount">0</span></button>
+
+    <div class="nav-group__label">Publish</div>
+    <button type="button" class="nav-item" data-page="export"><span class="nav-item__icon">&#9673;</span> Save &amp; Export</button>
+
+    <div class="sidebar__footer">
+      <button type="button" id="lockBtn">Lock Dashboard</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="hamburger-btn" id="hamburgerBtn">&#9776;</button>
+        <div class="topbar__title">
+          <h1 id="topbarTitle">Dashboard Home</h1>
+          <p id="topbarSubtitle">Overview of your site content</p>
+        </div>
+      </div>
+      <div class="topbar__actions">
+        <label class="btn btn--ghost" style="cursor:pointer;">
+          Load File
+          <input type="file" id="loadFile" accept=".js" style="display:none;">
+        </label>
+        <button class="btn btn--primary" id="topGenerateBtn">Save &amp; Export</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="security-note">
+        <strong>Security note:</strong> this password check runs in your browser only — a basic lock, not a real security system. Change the default password (<code>ADMIN_PASSWORD</code> near the bottom of this file's code) before sharing this link with anyone.
+      </div>
+
+      <!-- ===== OVERVIEW ===== -->
+      <div class="page is-active" id="page-overview">
+        <div class="stat-grid">
+          <div class="stat-card"><strong id="statDoctors">0</strong><span>Doctor Profiles</span></div>
+          <div class="stat-card"><strong id="statVideos">0</strong><span>Videos</span></div>
+          <div class="stat-card"><strong id="statFaq">0</strong><span>FAQ Entries</span></div>
+          <div class="stat-card"><strong id="statHours">0</strong><span>Hours Rows</span></div>
+        </div>
+        <div class="panel">
+          <h2>Quick Access</h2>
+          <p class="hint">Jump straight to any section.</p>
+          <div class="quick-links">
+            <button type="button" class="quick-link" data-goto="branding"><span class="quick-link__icon">&#9673;</span><span><strong>Logo &amp; Favicon</strong><span>Replace placeholder branding</span></span></button>
+            <button type="button" class="quick-link" data-goto="booking"><span class="quick-link__icon">&#9673;</span><span><strong>Booking Delivery</strong><span>Make appointment requests reach your inbox</span></span></button>
+            <button type="button" class="quick-link" data-goto="doctors"><span class="quick-link__icon">&#9673;</span><span><strong>Doctor Profiles</strong><span>Add, edit or remove doctors</span></span></button>
+            <button type="button" class="quick-link" data-goto="videos"><span class="quick-link__icon">&#9673;</span><span><strong>Videos</strong><span>Add YouTube, Facebook &amp; more</span></span></button>
+            <button type="button" class="quick-link" data-goto="rating"><span class="quick-link__icon">&#9673;</span><span><strong>Google Rating</strong><span>Add your real rating &amp; reviews</span></span></button>
+            <button type="button" class="quick-link" data-goto="map"><span class="quick-link__icon">&#9673;</span><span><strong>Google Map</strong><span>Embed your real location</span></span></button>
+            <button type="button" class="quick-link" data-goto="export"><span class="quick-link__icon">&#9673;</span><span><strong>Save &amp; Export</strong><span>Download the updated content.js</span></span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== BRANDING ===== -->
+      <div class="page" id="page-branding">
+        <div class="panel">
+          <h2>Logo &amp; Favicon</h2>
+          <p class="hint">Leave blank to keep the default designed logo mark. Paste a direct image URL once you have a real logo file hosted somewhere.</p>
+          <div class="row2">
+            <div class="field"><label>Logo Image URL</label><input type="text" id="b_logo" placeholder="https://.../logo.png"></div>
+            <div class="field"><label>Favicon Image URL</label><input type="text" id="b_favicon" placeholder="https://.../favicon.png"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== HERO IMAGES ===== -->
+      <div class="page" id="page-hero">
+        <div class="panel">
+          <h2>Hero Images</h2>
+          <p class="hint">The main building photo and the small doctor-avatar circles shown in the hero section.</p>
+          <div class="field"><label>Hero Building Photo URL</label><input type="text" id="h_building" placeholder="https://.../hospital-front.jpg"></div>
+          <div id="avatarsRepeater"></div>
+          <button type="button" class="add-btn" id="addAvatar">+ Add Avatar Image</button>
+        </div>
+      </div>
+
+      <!-- ===== CONTACT ===== -->
+      <div class="page" id="page-contact">
+        <div class="panel">
+          <h2>Contact Details</h2>
+          <p class="hint">Appears in the header, hero, booking sidebar, footer, and WhatsApp button.</p>
+          <div class="row2">
+            <div class="field"><label>Display Phone Number</label><input type="text" id="c_phone" placeholder="0300 8588095"></div>
+            <div class="field"><label>Phone Link (digits only, with country code)</label><input type="text" id="c_phoneHref" placeholder="923114580775"></div>
+          </div>
+          <div class="field"><label>WhatsApp Number (digits only, with country code, no +)</label><input type="text" id="c_whatsapp" placeholder="923114580775"></div>
+          <div class="field"><label>Full Address</label><textarea id="c_address"></textarea></div>
+          <div class="row2">
+            <div class="field"><label>Hospital's Facebook Page URL</label><input type="text" id="c_facebook" placeholder="https://facebook.com/..."></div>
+            <div class="field"><label>Hospital's YouTube Channel URL</label><input type="text" id="c_youtube" placeholder="https://youtube.com/..."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== BOOKING DELIVERY ===== -->
+      <div class="page" id="page-booking">
+        <div class="panel">
+          <h2>Booking Form Delivery</h2>
+          <p class="hint">
+            <strong>Important:</strong> without this set up, the appointment form on your site shows patients a
+            confirmation message, but nobody at the hospital actually receives it. Setting this up takes 2 minutes
+            and requires no coding or backend server:
+          </p>
+          <p class="hint">
+            1. Go to <code>web3forms.com</code> and enter the hospital's email address<br>
+            2. You'll instantly get a free "Access Key" — no account signup needed<br>
+            3. Paste that key below, then Generate &amp; Export as usual<br>
+            4. Every booking form submission will now arrive directly in that inbox
+          </p>
+          <div class="field"><label>Web3Forms Access Key</label><input type="text" id="bk_key" placeholder="e.g. a1b2c3d4-e5f6-..."></div>
+        </div>
+
+        <div class="panel">
+          <h2>Google Analytics (optional)</h2>
+          <p class="hint">
+            If you set up a free Google Analytics account, paste your Measurement ID here to start tracking
+            visitors. Leave blank to skip — nothing loads until you add one.
+          </p>
+          <div class="field"><label>GA Measurement ID</label><input type="text" id="an_gaid" placeholder="e.g. G-XXXXXXXXXX"></div>
+        </div>
+      </div>
+
+      <!-- ===== RATING ===== -->
+      <div class="page" id="page-rating">
+        <div class="panel">
+          <h2>Google Rating Badge</h2>
+          <p class="hint">Shown in the hero. Update once you have real numbers from your Google Business Profile.</p>
+          <div class="row3">
+            <div class="field"><label>Rating (e.g. 4.5)</label><input type="text" id="r_value" placeholder="4.5"></div>
+            <div class="field"><label>Review Count</label><input type="number" id="r_count" placeholder="0"></div>
+            <div class="field"><label>Google Review Link</label><input type="text" id="r_url" placeholder="https://g.page/r/..."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== MAP ===== -->
+      <div class="page" id="page-map">
+        <div class="panel">
+          <h2>Google Map Embed</h2>
+          <p class="hint">On Google Maps: open your listing → Share → "Embed a map" tab → copy the full <code>&lt;iframe&gt;</code> code and paste it below.</p>
+          <div class="field"><label>Map Embed Code</label><textarea id="m_embed" placeholder="<iframe src=&quot;https://www.google.com/maps/embed?...&quot; ...></iframe>"></textarea></div>
+        </div>
+      </div>
+
+      <!-- ===== HOURS ===== -->
+      <div class="page" id="page-hours">
+        <div class="panel">
+          <h2>Visiting / OPD Hours</h2>
+          <p class="hint">Shown as a table before the booking section.</p>
+          <div id="hoursRepeater"></div>
+          <button type="button" class="add-btn" id="addHour">+ Add Row</button>
+        </div>
+      </div>
+
+      <!-- ===== OUR STORY ===== -->
+      <div class="page" id="page-story">
+        <div class="panel">
+          <h2>Our Story / Why Choose Us</h2>
+          <div class="field"><label>Section Photo URL</label><input type="text" id="s_image" placeholder="https://.../team-photo.jpg"></div>
+          <div class="field"><label>Eyebrow Label</label><input type="text" id="s_eyebrow" placeholder="Our Story"></div>
+          <div class="field"><label>Heading</label><input type="text" id="s_title"></div>
+          <div class="field"><label>Paragraph</label><textarea id="s_paragraph"></textarea></div>
+          <div id="storyPointsRepeater"></div>
+          <button type="button" class="add-btn" id="addStoryPoint">+ Add Point</button>
+        </div>
+      </div>
+
+      <!-- ===== FAQ ===== -->
+      <div class="page" id="page-faq">
+        <div class="panel">
+          <h2>FAQ</h2>
+          <div id="faqRepeater"></div>
+          <button type="button" class="add-btn" id="addFaq">+ Add Question</button>
+        </div>
+      </div>
+
+      <!-- ===== DOCTORS ===== -->
+      <div class="page" id="page-doctors">
+        <div class="panel">
+          <h2>Doctor Profiles</h2>
+          <p class="hint">Default set is 4 consultants. Each doctor can have a Profile Page URL (e.g. doctors/dr-ayub.html) for the "View Full Profile" button. Add or remove as needed.</p>
+          <div id="doctorsRepeater"></div>
+          <button type="button" class="add-btn" id="addDoctor">+ Add Doctor</button>
+        </div>
+      </div>
+
+      <!-- ===== VIDEOS ===== -->
+      <div class="page" id="page-videos">
+        <div class="panel">
+          <h2>Videos</h2>
+          <p class="hint">For YouTube: paste the embed URL as <code>https://www.youtube.com/embed/VIDEO_ID</code>. For Facebook: paste the full Facebook video plugin URL (see SETUP-GUIDE.md). Any platform works as long as it gives you an embeddable URL.</p>
+          <div id="videosRepeater"></div>
+          <button type="button" class="add-btn" id="addVideo">+ Add Video</button>
+        </div>
+      </div>
+
+      <!-- ===== EXPORT ===== -->
+      <div class="page" id="page-export">
+        <div class="panel">
+          <h2>Save &amp; Export</h2>
+          <p class="hint">This site has no live database — generate the updated <code>content.js</code> below, download it, then upload that one file to your server to replace the old one.</p>
+          <button class="btn btn--primary" id="generateBtn" style="width:100%;">Generate Updated content.js</button>
+          <div class="output" id="output" style="display:none; margin-top:20px;">
+            <textarea id="outputText" readonly></textarea>
+            <div class="output-actions">
+              <button class="btn btn--primary" id="downloadBtn">Download content.js</button>
+              <button class="btn btn--ghost" id="copyBtn">Copy to Clipboard</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="content.js"></script>
+<script>
+  // Change this password before sharing this dashboard link with anyone.
+  var ADMIN_PASSWORD = "national2026";
+
+  var gate = document.getElementById('gate');
+  var app = document.getElementById('app');
+  var gatePassword = document.getElementById('gatePassword');
+  var gateSubmit = document.getElementById('gateSubmit');
+  var gateError = document.getElementById('gateError');
+
+  function unlock() {
+    if (gatePassword.value === ADMIN_PASSWORD) {
+      gate.style.display = 'none';
+      app.classList.add('is-visible');
+      sessionStorage.setItem('ph_admin_unlocked', '1');
+      loadDefaults();
+      updateStats();
+    } else {
+      gateError.style.display = 'block';
+    }
+  }
+  gateSubmit.addEventListener('click', unlock);
+  gatePassword.addEventListener('keydown', function (e) { if (e.key === 'Enter') unlock(); });
+
+  if (sessionStorage.getItem('ph_admin_unlocked') === '1') {
+    gate.style.display = 'none';
+    app.classList.add('is-visible');
+  }
+
+  document.getElementById('lockBtn').addEventListener('click', function () {
+    sessionStorage.removeItem('ph_admin_unlocked');
+    location.reload();
+  });
+
+  function showToast(msg) {
+    var toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('is-visible');
+    setTimeout(function () { toast.classList.remove('is-visible'); }, 2200);
+  }
+
+  // ---- Sidebar navigation ----
+  var navItems = document.querySelectorAll('.nav-item[data-page]');
+  var pages = document.querySelectorAll('.page');
+  var pageTitles = {
+    overview: ['Dashboard Home', 'Overview of your site content'],
+    branding: ['Logo & Favicon', 'Your hospital branding'],
+    hero: ['Hero Images', 'Homepage banner photos'],
+    contact: ['Contact Details', 'Phone, WhatsApp, address & social links'],
+    booking: ['Booking Delivery', 'Where appointment requests get sent'],
+    rating: ['Google Rating', 'Star rating badge shown in the hero'],
+    map: ['Google Map', 'Real location embed'],
+    hours: ['Visiting Hours', 'OPD & visiting hours table'],
+    story: ['Our Story', 'Why Choose Us section'],
+    faq: ['FAQ', 'Frequently asked questions'],
+    doctors: ['Doctor Profiles', 'Add, edit or remove consultants'],
+    videos: ['Videos', 'Facility tours & patient stories'],
+    export: ['Save & Export', 'Generate and download content.js']
+  };
+
+  function goToPage(pageId) {
+    pages.forEach(function (p) { p.classList.toggle('is-active', p.id === 'page-' + pageId); });
+    navItems.forEach(function (n) { n.classList.toggle('is-active', n.getAttribute('data-page') === pageId); });
+    var meta = pageTitles[pageId] || ['', ''];
+    document.getElementById('topbarTitle').textContent = meta[0];
+    document.getElementById('topbarSubtitle').textContent = meta[1];
+    document.getElementById('sidebar').classList.remove('is-open');
+    document.getElementById('sidebarBackdrop').classList.remove('is-visible');
+    window.scrollTo(0, 0);
+  }
+
+  navItems.forEach(function (item) {
+    item.addEventListener('click', function () { goToPage(item.getAttribute('data-page')); });
+  });
+  document.querySelectorAll('[data-goto]').forEach(function (btn) {
+    btn.addEventListener('click', function () { goToPage(btn.getAttribute('data-goto')); });
+  });
+
+  // ---- Mobile sidebar toggle ----
+  var sidebar = document.getElementById('sidebar');
+  var sidebarBackdrop = document.getElementById('sidebarBackdrop');
+  document.getElementById('hamburgerBtn').addEventListener('click', function () {
+    sidebar.classList.add('is-open');
+    sidebarBackdrop.classList.add('is-visible');
+  });
+  sidebarBackdrop.addEventListener('click', function () {
+    sidebar.classList.remove('is-open');
+    sidebarBackdrop.classList.remove('is-visible');
+  });
+
+  // ---- Repeater helpers ----
+  function makeRepeaterItem(container, html) {
+    var wrap = document.createElement('div');
+    wrap.className = 'repeat-item';
+    wrap.innerHTML = '<button type="button" class="repeat-item__remove" title="Remove">&times;</button>' + html;
+    wrap.querySelector('.repeat-item__remove').addEventListener('click', function () { wrap.remove(); updateStats(); });
+    container.appendChild(wrap);
+    return wrap;
+  }
+
+  function addAvatarRow(url) {
+    makeRepeaterItem(document.getElementById('avatarsRepeater'),
+      '<div class="field"><label>Avatar Image URL</label><input type="text" class="avatar_url" value="' + (url || '') + '"></div>'
+    );
+  }
+  function addHourRow(day, time) {
+    makeRepeaterItem(document.getElementById('hoursRepeater'),
+      '<div class="row2">' +
+        '<div class="field"><label>Day / Label</label><input type="text" class="hour_day" value="' + (day || '') + '"></div>' +
+        '<div class="field"><label>Time</label><input type="text" class="hour_time" value="' + (time || '') + '"></div>' +
+      '</div>'
+    );
+  }
+  function addStoryPointRow(text) {
+    makeRepeaterItem(document.getElementById('storyPointsRepeater'),
+      '<div class="field"><label>Point</label><input type="text" class="story_point" value="' + (text || '') + '"></div>'
+    );
+  }
+  function addFaqRow(q, a) {
+    makeRepeaterItem(document.getElementById('faqRepeater'),
+      '<div class="field"><label>Question</label><input type="text" class="faq_q" value="' + (q || '') + '"></div>' +
+      '<div class="field"><label>Answer</label><textarea class="faq_a">' + (a || '') + '</textarea></div>'
+    );
+  }
+  function addDoctorRow(d) {
+    d = d || {};
+    makeRepeaterItem(document.getElementById('doctorsRepeater'),
+      '<div class="repeat-item__title">Doctor</div>' +
+      '<div class="row2">' +
+        '<div class="field"><label>Name</label><input type="text" class="doc_name" value="' + (d.name || '') + '"></div>' +
+        '<div class="field"><label>Role / Title</label><input type="text" class="doc_role" value="' + (d.role || '') + '"></div>' +
+      '</div>' +
+      '<div class="field"><label>Bio</label><textarea class="doc_bio">' + (d.bio || '') + '</textarea></div>' +
+      '<div class="row2">' +
+        '<div class="field"><label>Photo URL</label><input type="text" class="doc_photo" value="' + (d.photo || '') + '"></div>' +
+        '<div class="field"><label>Profile Page URL (slug)</label><input type="text" class="doc_page" value="' + (d.pageUrl || '') + '" placeholder="doctors/dr-ayub.html"></div>' +
+      '</div>' +
+      '<div class="row2">' +
+        '<div class="field"><label>Facebook URL</label><input type="text" class="doc_fb" value="' + (d.facebookUrl || '') + '"></div>' +
+        '<div class="field"><label>YouTube URL</label><input type="text" class="doc_yt" value="' + (d.youtubeUrl || '') + '"></div>' +
+      '</div>'
+    );
+    updateStats();
+  }
+  function addVideoRow(v) {
+    v = v || {};
+    makeRepeaterItem(document.getElementById('videosRepeater'),
+      '<div class="repeat-item__title">Video</div>' +
+      '<div class="row2">' +
+        '<div class="field"><label>Title</label><input type="text" class="vid_title" value="' + (v.title || '') + '"></div>' +
+        '<div class="field"><label>Platform Name (YouTube, Facebook, TikTok, Vimeo, Instagram — any)</label><input type="text" class="vid_platform" value="' + (v.platform || 'YouTube') + '"></div>' +
+      '</div>' +
+      '<div class="field"><label>Embed URL (full URL — see hint above)</label><input type="text" class="vid_embed" value="' + (v.embedUrl || '') + '"></div>' +
+      '<div class="field"><label>Thumbnail Image URL</label><input type="text" class="vid_thumb" value="' + (v.thumbnail || '') + '"></div>' +
+      '<div class="field"><label><input type="checkbox" class="vid_wide" style="width:auto;display:inline-block;margin-right:6px;"' + (v.wide ? ' checked' : '') + '> Show as large/featured card</label></div>'
+    );
+    updateStats();
+  }
+
+  document.getElementById('addAvatar').addEventListener('click', function () { addAvatarRow(''); });
+  document.getElementById('addHour').addEventListener('click', function () { addHourRow('', ''); updateStats(); });
+  document.getElementById('addStoryPoint').addEventListener('click', function () { addStoryPointRow(''); });
+  document.getElementById('addFaq').addEventListener('click', function () { addFaqRow('', ''); updateStats(); });
+  document.getElementById('addDoctor').addEventListener('click', function () { addDoctorRow({}); });
+  document.getElementById('addVideo').addEventListener('click', function () { addVideoRow({}); });
+
+  function updateStats() {
+    var doctorCount = document.querySelectorAll('#doctorsRepeater .repeat-item').length;
+    var videoCount = document.querySelectorAll('#videosRepeater .repeat-item').length;
+    var faqCount = document.querySelectorAll('#faqRepeater .repeat-item').length;
+    var hoursCount = document.querySelectorAll('#hoursRepeater .repeat-item').length;
+    document.getElementById('statDoctors').textContent = doctorCount;
+    document.getElementById('statVideos').textContent = videoCount;
+    document.getElementById('statFaq').textContent = faqCount;
+    document.getElementById('statHours').textContent = hoursCount;
+    document.getElementById('navDoctorCount').textContent = doctorCount;
+    document.getElementById('navVideoCount').textContent = videoCount;
+  }
+
+  function loadDefaults() {
+    var data = window.SITE_CONTENT;
+    if (!data) return;
+    populateForm(data);
+  }
+
+  function clearRepeaters() {
+    ['hoursRepeater', 'storyPointsRepeater', 'faqRepeater', 'doctorsRepeater', 'videosRepeater', 'avatarsRepeater'].forEach(function (id) {
+      document.getElementById(id).innerHTML = '';
+    });
+  }
+
+  function populateForm(data) {
+    clearRepeaters();
+
+    if (data.branding) {
+      document.getElementById('b_logo').value = data.branding.logoImageUrl || '';
+      document.getElementById('b_favicon').value = data.branding.faviconImageUrl || '';
+    }
+    if (data.hero) {
+      document.getElementById('h_building').value = data.hero.buildingImage || '';
+      (data.hero.avatarImages || []).forEach(function (url) { addAvatarRow(url); });
+    }
+    if (data.contact) {
+      document.getElementById('c_phone').value = data.contact.phone || '';
+      document.getElementById('c_phoneHref').value = data.contact.phoneHref || '';
+      document.getElementById('c_whatsapp').value = data.contact.whatsapp || '';
+      document.getElementById('c_address').value = data.contact.address || '';
+      document.getElementById('c_facebook').value = data.contact.facebookUrl || '';
+      document.getElementById('c_youtube').value = data.contact.youtubeUrl || '';
+    }
+    if (data.booking) {
+      document.getElementById('bk_key').value = data.booking.web3formsAccessKey || '';
+    }
+    if (data.analytics) {
+      document.getElementById('an_gaid').value = data.analytics.gaMeasurementId || '';
+    }
+    if (data.rating) {
+      document.getElementById('r_value').value = data.rating.value || '';
+      document.getElementById('r_count').value = data.rating.count || 0;
+      document.getElementById('r_url').value = data.rating.googleReviewUrl || '';
+    }
+    if (data.map) {
+      document.getElementById('m_embed').value = data.map.embedHtml || '';
+    }
+    (data.hours || []).forEach(function (row) { addHourRow(row.day, row.time); });
+    if (data.ourStory) {
+      document.getElementById('s_image').value = data.ourStoryImage || '';
+      document.getElementById('s_eyebrow').value = data.ourStory.eyebrow || '';
+      document.getElementById('s_title').value = data.ourStory.title || '';
+      document.getElementById('s_paragraph').value = data.ourStory.paragraph || '';
+      (data.ourStory.points || []).forEach(function (p) { addStoryPointRow(p); });
+    }
+    (data.faq || []).forEach(function (item) { addFaqRow(item.question, item.answer); });
+    (data.doctors || []).forEach(function (doc) { addDoctorRow(doc); });
+    (data.videos || []).forEach(function (v) { addVideoRow(v); });
+
+    updateStats();
+  }
+
+  function collectForm() {
+    var avatarImages = [];
+    document.querySelectorAll('#avatarsRepeater .repeat-item').forEach(function (item) {
+      var val = item.querySelector('.avatar_url').value;
+      if (val) avatarImages.push(val);
+    });
+    var hours = [];
+    document.querySelectorAll('#hoursRepeater .repeat-item').forEach(function (item) {
+      hours.push({ day: item.querySelector('.hour_day').value, time: item.querySelector('.hour_time').value });
+    });
+    var storyPoints = [];
+    document.querySelectorAll('#storyPointsRepeater .repeat-item').forEach(function (item) {
+      storyPoints.push(item.querySelector('.story_point').value);
+    });
+    var faq = [];
+    document.querySelectorAll('#faqRepeater .repeat-item').forEach(function (item) {
+      faq.push({ question: item.querySelector('.faq_q').value, answer: item.querySelector('.faq_a').value });
+    });
+    var doctors = [];
+    document.querySelectorAll('#doctorsRepeater .repeat-item').forEach(function (item) {
+      doctors.push({
+        name: item.querySelector('.doc_name').value,
+        role: item.querySelector('.doc_role').value,
+        bio: item.querySelector('.doc_bio').value,
+        photo: item.querySelector('.doc_photo').value,
+        pageUrl: item.querySelector('.doc_page').value,
+        facebookUrl: item.querySelector('.doc_fb').value,
+        youtubeUrl: item.querySelector('.doc_yt').value
+      });
+    });
+    var videos = [];
+    document.querySelectorAll('#videosRepeater .repeat-item').forEach(function (item) {
+      videos.push({
+        title: item.querySelector('.vid_title').value,
+        platform: item.querySelector('.vid_platform').value,
+        embedUrl: item.querySelector('.vid_embed').value,
+        thumbnail: item.querySelector('.vid_thumb').value,
+        wide: item.querySelector('.vid_wide').checked
+      });
+    });
+
+    return {
+      branding: {
+        logoImageUrl: document.getElementById('b_logo').value,
+        faviconImageUrl: document.getElementById('b_favicon').value
+      },
+      hero: {
+        buildingImage: document.getElementById('h_building').value,
+        avatarImages: avatarImages
+      },
+      contact: {
+        phone: document.getElementById('c_phone').value,
+        phoneHref: document.getElementById('c_phoneHref').value,
+        whatsapp: document.getElementById('c_whatsapp').value,
+        address: document.getElementById('c_address').value,
+        facebookUrl: document.getElementById('c_facebook').value,
+        youtubeUrl: document.getElementById('c_youtube').value
+      },
+      rating: {
+        value: parseFloat(document.getElementById('r_value').value) || 0,
+        count: parseInt(document.getElementById('r_count').value, 10) || 0,
+        googleReviewUrl: document.getElementById('r_url').value
+      },
+      map: { embedHtml: document.getElementById('m_embed').value },
+      booking: { web3formsAccessKey: document.getElementById('bk_key').value },
+      analytics: { gaMeasurementId: document.getElementById('an_gaid').value },
+      hours: hours,
+      ourStoryImage: document.getElementById('s_image').value,
+      ourStory: {
+        eyebrow: document.getElementById('s_eyebrow').value,
+        title: document.getElementById('s_title').value,
+        paragraph: document.getElementById('s_paragraph').value,
+        points: storyPoints
+      },
+      faq: faq,
+      doctors: doctors,
+      videos: videos
+    };
+  }
+
+  function generateOutput() {
+    var data = collectForm();
+    var jsCode = 'window.SITE_CONTENT = ' + JSON.stringify(data, null, 2) + ';\n';
+    document.getElementById('outputText').value = jsCode;
+    document.getElementById('output').style.display = 'block';
+    updateStats();
+  }
+
+  document.getElementById('generateBtn').addEventListener('click', generateOutput);
+  document.getElementById('topGenerateBtn').addEventListener('click', function () {
+    goToPage('export');
+    generateOutput();
+  });
+
+  document.getElementById('downloadBtn').addEventListener('click', function () {
+    var text = document.getElementById('outputText').value;
+    if (!text) { generateOutput(); text = document.getElementById('outputText').value; }
+    var blob = new Blob([text], { type: 'text/javascript' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'content.js';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('content.js downloaded — upload it to your server to replace the old one.');
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    var textArea = document.getElementById('outputText');
+    if (!textArea.value) { generateOutput(); }
+    textArea.select();
+    document.execCommand('copy');
+    showToast('Copied to clipboard.');
+  });
+
+  document.getElementById('loadFile').addEventListener('change', function (e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function (evt) {
+      try {
+        var text = evt.target.result;
+        var jsonPart = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+        var data = JSON.parse(jsonPart);
+        populateForm(data);
+        showToast('Loaded content.js into the form.');
+      } catch (err) {
+        showToast('Could not read that file — make sure it is a content.js exported from this dashboard.');
+      }
+    };
+    reader.readAsText(file);
+  });
+</script>
+</body>
+</html>

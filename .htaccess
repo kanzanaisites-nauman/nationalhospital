@@ -1,0 +1,11 @@
+# National Hospital Bahawalnagar — Apache config (used on cPanel-style hosting)
+# Netlify/Vercel ignore this file and auto-detect 404.html on their own.
+
+ErrorDocument 404 /404.html
+
+# Force HTTPS if your host has SSL active (recommended — see SETUP-GUIDE.md)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>

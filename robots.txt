@@ -1,0 +1,8 @@
+# National Hospital Bahawalnagar — robots.txt
+# IMPORTANT: replace the domain below with your real domain once deployed.
+
+User-agent: *
+Allow: /
+Disallow: /admin.html
+
+Sitemap: https://DOMAIN_PLACEHOLDER/sitemap.xml
