@@ -1144,6 +1144,11 @@ p { margin: 0; }
 }
 
 @media (max-width: 900px) {
+  .dept-grid,
+  .doctor-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
   .main-nav, .nav__cta { display: none; }
   .hamburger { display: flex; }
   .hero__grid { grid-template-columns: 1fr; padding-bottom: 28px; gap: 28px; }
@@ -1391,9 +1396,16 @@ a.dept-card { color: inherit; display: flex; flex-direction: column; }
 }
 .hero__avatars img:first-child { margin-left: 0; }
 
-@media (max-width: 1080px) {
+@media (min-width: 901px) and (max-width: 1080px) {
   .dept-grid--four,
   .doctor-grid--four { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .dept-grid,
+  .dept-grid--four,
+  .doctor-grid,
+  .doctor-grid--four { grid-template-columns: 1fr; }
 }
 
 /* ---------- Doctor profile pages ---------- */
