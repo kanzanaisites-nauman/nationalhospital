@@ -14,7 +14,7 @@ window.SITE_CONTENT = {
   "hero": {
     "buildingImage": "assets/hospital/hero-building.jpg",
     "avatarImages": [
-      "assets/doctors/dr-ayub/profile.jpg?v=2",
+      "assets/doctors/dr-ayub/profile.jpg?v=3",
       "assets/doctors/dr-amjad-tahir/profile.png?v=10",
       "assets/doctors/dr-sajjad/profile.png",
       "assets/doctors/dr-zareen-amjad/profile.png"
@@ -77,7 +77,7 @@ window.SITE_CONTENT = {
       "name": "Dr. Muhammad Ayub Naich",
       "role": "MBBS, MD (Gastroenterology) | Consultant Gastroenterologist & Hepatologist",
       "bio": "Advanced endoscopic specialist providing expert digestive and liver care at National Hospital Bahawalnagar.",
-      "photo": "assets/doctors/dr-ayub/profile.jpg?v=2",
+      "photo": "assets/doctors/dr-ayub/profile.jpg?v=3",
       "pageUrl": "doctors/dr-ayub.html",
       "facebookUrl": "",
       "youtubeUrl": ""
