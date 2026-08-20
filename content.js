@@ -1,4 +1,4 @@
-﻿window.SITE_CONTENT = {
+window.SITE_CONTENT = {
   "branding": {
     "logoImageUrl": "assets/hospital/logo.png",
     "faviconImageUrl": "assets/hospital/favicon.png"
@@ -14,7 +14,7 @@
   "hero": {
     "buildingImage": "assets/hospital/hero-building.jpg",
     "avatarImages": [
-      "assets/doctors/dr-ayub/profile.jpg",
+      "assets/doctors/dr-ayub/profile.jpg?v=2",
       "assets/doctors/dr-amjad-tahir/profile.png?v=10",
       "assets/doctors/dr-sajjad/profile.png",
       "assets/doctors/dr-zareen-amjad/profile.png"
@@ -42,11 +42,11 @@
   "ourStory": {
     "eyebrow": "Our Story",
     "title": "Specialist Care for Bahawalnagar Families",
-    "paragraph": "National Hospital Bahawalnagar brings consultant-led specialty care closer to home â€” gastroenterology, orthopedics, neurosurgery, and women's health â€” so patients can get expert treatment without travelling to larger cities.",
+    "paragraph": "National Hospital Bahawalnagar brings consultant-led specialty care closer to home — gastroenterology, orthopedics, neurosurgery, and women's health — so patients can get expert treatment without travelling to larger cities.",
     "points": [
       "Four specialist consultants under one roof",
       "Gastroenterology, Orthopedics, Neurosurgery & Women's Health",
-      "Call or WhatsApp to book â€” 0300 8588095",
+      "Call or WhatsApp to book — 0300 8588095",
       "Serving patients across Bahawalnagar, Punjab"
     ]
   },
@@ -57,7 +57,7 @@
     },
     {
       "question": "What specialties are available?",
-      "answer": "Gastroenterology & Hepatology (Dr. Muhammad Ayub Naich), Orthopedics (Dr. Amjad Tahir), Neurosurgery (Dr. Sajjad Hussain â€” Sundays), and Obstetrics & Gynaecology (Dr. Zareen Amjad)."
+      "answer": "Gastroenterology & Hepatology (Dr. Muhammad Ayub Naich), Orthopedics (Dr. Amjad Tahir), Neurosurgery (Dr. Sajjad Hussain — Sundays), and Obstetrics & Gynaecology (Dr. Zareen Amjad)."
     },
     {
       "question": "When is Dr. Sajjad Hussain available?",
@@ -77,7 +77,7 @@
       "name": "Dr. Muhammad Ayub Naich",
       "role": "MBBS, MD (Gastroenterology) | Consultant Gastroenterologist & Hepatologist",
       "bio": "Advanced endoscopic specialist providing expert digestive and liver care at National Hospital Bahawalnagar.",
-      "photo": "assets/doctors/dr-ayub/profile.jpg",
+      "photo": "assets/doctors/dr-ayub/profile.jpg?v=2",
       "pageUrl": "doctors/dr-ayub.html",
       "facebookUrl": "",
       "youtubeUrl": ""
@@ -85,7 +85,7 @@
     {
       "name": "Dr. Amjad Tahir",
       "role": "MBBS, FCPS (Orthopedics) | Orthopedic Surgeon",
-      "bio": "Specialist in joint replacement, trauma, spine, and sports injury care â€” helping patients regain mobility.",
+      "bio": "Specialist in joint replacement, trauma, spine, and sports injury care — helping patients regain mobility.",
       "photo": "assets/doctors/dr-amjad-tahir/profile.png?v=10",
       "pageUrl": "doctors/dr-amjad-tahir.html",
       "facebookUrl": "",
@@ -103,7 +103,7 @@
     {
       "name": "Dr. Zareen Amjad",
       "role": "MBBS, FCPS | Obstetrician & Gynecologist (OB-GYN)",
-      "bio": "Compassionate women's health and pregnancy care â€” from antenatal checkups to PCOS, infertility, and menopause.",
+      "bio": "Compassionate women's health and pregnancy care — from antenatal checkups to PCOS, infertility, and menopause.",
       "photo": "assets/doctors/dr-zareen-amjad/profile.png",
       "pageUrl": "doctors/dr-zareen-amjad.html",
       "facebookUrl": "",
@@ -112,7 +112,7 @@
   ],
   "videos": [
     {
-      "title": "Facility Tour — National Hospital Bahawalnagar",
+      "title": "Facility Tour � National Hospital Bahawalnagar",
       "platform": "YouTube",
       "embedUrl": "https://www.youtube.com/embed/tVbTKiou0vs?autoplay=1&mute=1&rel=0&playsinline=1&modestbranding=1&enablejsapi=1",
       "thumbnail": "https://img.youtube.com/vi/tVbTKiou0vs/hqdefault.jpg",
