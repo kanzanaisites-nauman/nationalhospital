@@ -469,7 +469,7 @@
     story: ['Our Story', 'Why Choose Us section'],
     faq: ['FAQ', 'Frequently asked questions'],
     doctors: ['Doctor Profiles', 'Add, edit or remove consultants'],
-    videos: ['Videos', 'Facility tours & patient stories'],
+    videos: ['Videos', 'Facility tour video'],
     export: ['Save & Export', 'Generate and download content.js']
   };
 
@@ -567,7 +567,8 @@
       '</div>' +
       '<div class="field"><label>Embed URL (full URL — see hint above)</label><input type="text" class="vid_embed" value="' + (v.embedUrl || '') + '"></div>' +
       '<div class="field"><label>Thumbnail Image URL</label><input type="text" class="vid_thumb" value="' + (v.thumbnail || '') + '"></div>' +
-      '<div class="field"><label><input type="checkbox" class="vid_wide" style="width:auto;display:inline-block;margin-right:6px;"' + (v.wide ? ' checked' : '') + '> Show as large/featured card</label></div>'
+      '<div class="field"><label><input type="checkbox" class="vid_wide" style="width:auto;display:inline-block;margin-right:6px;"' + (v.wide ? ' checked' : '') + '> Show as large/featured card</label></div>' +
+      '<div class="field"><label><input type="checkbox" class="vid_autoplay" style="width:auto;display:inline-block;margin-right:6px;"' + (v.autoplay ? ' checked' : '') + '> Inline autoplay (facility tour)</label></div>'
     );
     updateStats();
   }
@@ -689,7 +690,8 @@
         platform: item.querySelector('.vid_platform').value,
         embedUrl: item.querySelector('.vid_embed').value,
         thumbnail: item.querySelector('.vid_thumb').value,
-        wide: item.querySelector('.vid_wide').checked
+        wide: item.querySelector('.vid_wide').checked,
+        autoplay: !!item.querySelector('.vid_autoplay') && item.querySelector('.vid_autoplay').checked
       });
     });
 

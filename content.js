@@ -112,18 +112,12 @@
   ],
   "videos": [
     {
-      "title": "TODO: Facility Tour â€” paste YouTube embed URL in admin.html",
+      "title": "Facility Tour — National Hospital Bahawalnagar",
       "platform": "YouTube",
-      "embedUrl": "https://www.youtube.com/embed/TODO_PASTE_VIDEO_ID",
-      "thumbnail": "assets/video-facility-tour.svg",
-      "wide": true
-    },
-    {
-      "title": "TODO: Patient Story â€” paste embed URL in admin.html",
-      "platform": "YouTube",
-      "embedUrl": "https://www.youtube.com/embed/TODO_PASTE_VIDEO_ID",
-      "thumbnail": "assets/video-patient-story.svg",
-      "wide": false
+      "embedUrl": "https://www.youtube.com/embed/tVbTKiou0vs?autoplay=1&mute=1&rel=0&playsinline=1&modestbranding=1&enablejsapi=1",
+      "thumbnail": "https://img.youtube.com/vi/tVbTKiou0vs/hqdefault.jpg",
+      "wide": true,
+      "autoplay": true
     }
   ]
 };

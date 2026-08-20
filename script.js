@@ -131,10 +131,34 @@ document.addEventListener('DOMContentLoaded', function () {
     }).join('');
   }
 
-  // --- Videos (supports any platform: YouTube, Facebook, TikTok, Vimeo, Instagram, etc.) ---
+  // --- Videos (inline autoplay facility tour + optional click-to-open cards) ---
   var videoGrid = document.getElementById('videoGrid');
   if (videoGrid && Array.isArray(DATA.videos)) {
     videoGrid.innerHTML = DATA.videos.map(function (video) {
+      if (video.autoplay) {
+        var embedSrc = video.embedUrl || '';
+        if (embedSrc.indexOf('autoplay=') === -1) {
+          embedSrc += (embedSrc.indexOf('?') === -1 ? '?' : '&') + 'autoplay=1';
+        }
+        if (embedSrc.indexOf('mute=') === -1) {
+          embedSrc += '&mute=1';
+        }
+        if (embedSrc.indexOf('enablejsapi=') === -1) {
+          embedSrc += '&enablejsapi=1';
+        }
+        return (
+          '<div class="video-embed video-embed--featured" data-video-autoplay>' +
+            '<div class="video-embed__frame">' +
+              '<iframe id="facilityTourPlayer" src="' + escapeHtml(embedSrc) + '" title="' + escapeHtml(video.title) + '" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>' +
+            '</div>' +
+            '<button type="button" class="video-embed__sound" id="enableVideoSound" aria-label="Enable video sound">' +
+              '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>' +
+              ' Tap for sound' +
+            '</button>' +
+            '<p class="video-embed__caption">' + escapeHtml(video.title) + '</p>' +
+          '</div>'
+        );
+      }
       var platformLower = (video.platform || '').toLowerCase();
       var badgeClass = 'video-card__badge';
       if (platformLower === 'facebook') badgeClass += ' video-card__badge--fb';
@@ -149,6 +173,24 @@ document.addEventListener('DOMContentLoaded', function () {
         '</button>'
       );
     }).join('');
+
+    var soundBtn = document.getElementById('enableVideoSound');
+    var tourFrame = document.getElementById('facilityTourPlayer');
+    if (soundBtn && tourFrame) {
+      soundBtn.addEventListener('click', function () {
+        var src = tourFrame.getAttribute('src') || '';
+        // User gesture: restart with sound enabled (browsers block unmuted autoplay without a click)
+        src = src.replace(/([?&])mute=1/, '$1mute=0');
+        if (src.indexOf('mute=') === -1) {
+          src += (src.indexOf('?') === -1 ? '?' : '&') + 'mute=0';
+        }
+        if (src.indexOf('autoplay=') === -1) {
+          src += '&autoplay=1';
+        }
+        tourFrame.setAttribute('src', src);
+        soundBtn.classList.add('is-hidden');
+      });
+    }
   }
 
   // --- Our Story points ---
