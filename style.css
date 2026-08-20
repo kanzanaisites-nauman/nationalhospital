@@ -288,6 +288,7 @@ p { margin: 0; }
   justify-content: center;
   gap: 0;
   flex-shrink: 0;
+  transform: translate(10px, -4px);
 }
 .brand--logo-only .brand__name { display: none; }
 .brand--logo-only .brand__mark {
@@ -311,6 +312,7 @@ p { margin: 0; }
 }
 .brand--footer.brand--logo-only {
   align-items: flex-start;
+  transform: none;
 }
 .brand--footer.brand--logo-only .brand__text {
   align-items: flex-start;
@@ -1236,7 +1238,7 @@ p { margin: 0; }
   .brand__mark { height: 58px; }
   .brand__mark img,
   .brand__logo { height: 58px; max-width: 200px; }
-  .brand--logo-only { gap: 0; }
+  .brand--logo-only { gap: 0; transform: translate(8px, -3px); }
   .brand--logo-only .brand__text { margin-top: -8px; }
   .brand--logo-only .brand__place {
     font-size: 9.5px;
@@ -1410,6 +1412,7 @@ p { margin: 0; }
   .brand__mark img,
   .brand__logo { height: 50px; max-width: 160px; }
   .nav__inner { height: 86px; gap: 6px; }
+  .brand--logo-only { transform: translate(6px, -2px); }
   .brand--logo-only .brand__text { margin-top: -7px; }
   .brand--logo-only .brand__place {
     font-size: 8.5px;
