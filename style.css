@@ -233,7 +233,7 @@ p { margin: 0; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 92px;
+  height: 104px;
   gap: 24px;
 }
 
@@ -242,7 +242,7 @@ p { margin: 0; }
   flex-shrink: 0;
   line-height: 0;
   width: auto;
-  height: 68px;
+  height: 84px;
   border-radius: 0;
   overflow: visible;
   background: transparent;
@@ -251,25 +251,25 @@ p { margin: 0; }
 }
 .brand__mark img,
 .brand__logo {
-  height: 68px;
+  height: 84px;
   width: auto;
-  max-width: 220px;
+  max-width: 280px;
   object-fit: contain;
   display: block;
 }
 .brand--footer .brand__mark,
 #footerLogoMark {
   width: auto;
-  height: 64px;
-  padding: 8px 12px;
+  height: 80px;
+  padding: 10px 14px;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.96);
 }
 .brand--footer .brand__mark img,
 #footerLogoMark img,
 .brand--footer .brand__logo {
-  height: 48px;
-  max-width: 200px;
+  height: 60px;
+  max-width: 240px;
 }
 .brand__text { display: flex; flex-direction: column; line-height: 1.15; }
 .brand__name { font-family: var(--font-display); font-weight: 600; font-size: 18px; color: var(--navy); }
@@ -1186,10 +1186,10 @@ p { margin: 0; }
   .doctor-contact-card { grid-template-columns: 1fr; }
   .why-grid { grid-template-columns: 1fr 1fr; }
   .gallery-strip { grid-template-columns: 1fr 1fr; }
-  .nav__inner { height: 78px; gap: 10px; }
-  .brand__mark { height: 56px; }
+  .nav__inner { height: 88px; gap: 10px; }
+  .brand__mark { height: 68px; }
   .brand__mark img,
-  .brand__logo { height: 56px; max-width: 190px; }
+  .brand__logo { height: 68px; max-width: 230px; }
   .mobile-menu {
     padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
     overflow-y: auto;
@@ -1348,10 +1348,10 @@ p { margin: 0; }
   .hero__title { font-size: 26px; }
   .floating-card--1,
   .floating-card--2 { display: none; }
-  .brand__mark { height: 48px; }
+  .brand__mark { height: 58px; }
   .brand__mark img,
-  .brand__logo { height: 48px; max-width: 150px; }
-  .nav__inner { height: 70px; }
+  .brand__logo { height: 58px; max-width: 185px; }
+  .nav__inner { height: 78px; }
   .nav__phone { font-size: 11.5px; padding: 7px 8px; }
   .nav__phone span { letter-spacing: -0.02em; }
 }
