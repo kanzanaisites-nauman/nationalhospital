@@ -286,14 +286,19 @@ p { margin: 0; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: 0;
   flex-shrink: 0;
 }
 .brand--logo-only .brand__name { display: none; }
+.brand--logo-only .brand__mark {
+  margin-bottom: 0;
+}
 .brand--logo-only .brand__text {
   width: 100%;
   align-items: center;
   text-align: center;
+  margin-top: -6px;
+  line-height: 1;
 }
 .brand--logo-only .brand__place {
   font-size: 11px;
@@ -301,6 +306,8 @@ p { margin: 0; }
   letter-spacing: 0.14em;
   color: var(--blue);
   line-height: 1;
+  margin: 0;
+  padding: 0;
 }
 .brand--footer.brand--logo-only {
   align-items: flex-start;
@@ -308,7 +315,7 @@ p { margin: 0; }
 .brand--footer.brand--logo-only .brand__text {
   align-items: flex-start;
   text-align: left;
-  margin-top: 2px;
+  margin-top: -4px;
 }
 .brand--footer.brand--logo-only .brand__place {
   color: #8ea3c9;
@@ -1229,7 +1236,8 @@ p { margin: 0; }
   .brand__mark { height: 58px; }
   .brand__mark img,
   .brand__logo { height: 58px; max-width: 200px; }
-  .brand--logo-only { gap: 2px; }
+  .brand--logo-only { gap: 0; }
+  .brand--logo-only .brand__text { margin-top: -8px; }
   .brand--logo-only .brand__place {
     font-size: 9.5px;
     letter-spacing: 0.12em;
@@ -1402,6 +1410,7 @@ p { margin: 0; }
   .brand__mark img,
   .brand__logo { height: 50px; max-width: 160px; }
   .nav__inner { height: 86px; gap: 6px; }
+  .brand--logo-only .brand__text { margin-top: -7px; }
   .brand--logo-only .brand__place {
     font-size: 8.5px;
     letter-spacing: 0.1em;
